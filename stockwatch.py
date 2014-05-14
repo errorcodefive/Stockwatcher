@@ -1,6 +1,7 @@
 import ystockquote
 import smtplib
 import argparse
+import pygame
 
 from time import strftime
 from time import sleep
@@ -189,9 +190,11 @@ symListWatch = ["TMO", "DOW", "MMM", "FOXA", "IMX","RTN", "GD", "STX", "SNDK", "
         
 #ARGPARSE
 parser = argparse.ArgumentParser()
+
 parser.add_argument("-p", "--portfolio", help = "send email of portfolio stocks", action = 'store_true')
 parser.add_argument("-wl","--watchlist", type = float, help = "check for n% decrease in price of watchlist stocks")
 parser.add_argument("-m", "--morning", type = float, help = "check for n% decrease in price of watch list stock from last day's price to now")
+parser.add_argument("-gui","--gui", help = "GUI Stockwatch", action = "store_true")
 
 args = parser.parse_args()
 
@@ -243,8 +246,6 @@ if args.watchlist:
 		eText = msg.as_string()
 		server.sendmail(sender,receiver,eText)
 		
-    
-                
 #READ PERCENT CHANGE FROM ARGUMENTS AND CHECK WATCHLIST FOR STOCK CHANGES FROM PREVIOUS DAY    
 if args.morning:
 	perChange = args.morning
@@ -265,5 +266,8 @@ if args.morning:
 		server.login(username,password)
 		eText = msg.as_string()
 		server.sendmail(sender,receiver,eText)
-    
+
+if args.gui:
+    pygame.init()
+    screen = pygame.display.set_mode((1600,900))
     
